@@ -18,19 +18,6 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Server server= new Server();
-//                server.startServer();
-//
-//            }
-//        }).start();
-
-
-
-
     }
 
     public static void main(String[] args) {

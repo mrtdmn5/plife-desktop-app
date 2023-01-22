@@ -75,24 +75,18 @@ public class HomeController implements Initializable {
     );
 
     public void setTab(TableView ordersHistoryTable) {
-        JSONParser jsonParser = new JSONParser();
         JSONArray historyArr = new JSONArray();
-        Date date = new Date();
+        FileManager fileManager = new FileManager();
         try {
             try {
-                historyArr = (JSONArray) jsonParser.parse(new FileReader("D:/output.json"));
-
+                historyArr = fileManager.readJsonFile();
             } catch (Exception e) {
-                FileWriter file = new FileWriter("D:/output.json");
-                file.write("");
-                file.close();
+                fileManager.writeJsonFile(new JSONArray());
             }
-
             ObservableList<AddTableItems> list = FXCollections.observableArrayList();
             for (int i = 0; i < historyArr.size(); i++) {
                 JSONObject item = (JSONObject) historyArr.get(i);
                 list.add(new AddTableItems((String) item.get("date"), (String) item.get("orderNo"), item.get("productName") + "4", Integer.parseInt(item.get("quantity").toString()), Integer.parseInt(item.get("unitPrice").toString())));
-
             }
             ordersHistoryTable.setItems(list);
 
@@ -101,7 +95,6 @@ public class HomeController implements Initializable {
             System.out.println("Error on Write History Table" + e);
             e.printStackTrace();
         }
-
 
     }
 
