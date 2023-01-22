@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="573.0" prefWidth="691.0" style="-fx-background-color: #ececec;"  fx:controller="com.example.plifeterminaldesktop.HomeController" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="573.0" prefWidth="691.0" style="-fx-background-color: #ececec;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plifeterminaldesktop.HomeController">
    <top>
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #F5F5F5;" BorderPane.alignment="CENTER">
          <children>
@@ -44,7 +44,7 @@
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <TabPane prefHeight="387.0" prefWidth="508.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="mainTabPane" prefHeight="387.0" prefWidth="508.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Oreders">
             <content>
@@ -57,21 +57,25 @@
                             <TableColumn fx:id="ordersProductionName" prefWidth="75.0" text="Production" />
                             <TableColumn fx:id="ordersQuantity" prefWidth="75.0" text="Quantity" />
                               <TableColumn fx:id="ordersPrice" prefWidth="75.0" text="Price" />
-                              <TableColumn fx:id="ordersApporve" prefWidth="75.0" text="Approve" />
+                              <TableColumn fx:id="ordersApprove" prefWidth="75.0" text="Approve" />
                           </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab fx:id="ordersHistoryTab" text="History">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView  maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="293.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="ordersHistoryTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="691.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn fx:id="historyTableOrdersDate" prefWidth="75.0" text="Date" />
+                              <TableColumn fx:id="historyTableOrderNo" prefWidth="75.0" text="Table Name" />
+                              <TableColumn fx:id="historyTableOrderProductionName" prefWidth="75.0" text="Production" />
+                              <TableColumn fx:id="historyTableOrdersQuantity" prefWidth="75.0" text="Quantity" />
+                              <TableColumn fx:id="historyTableOrdersPrice" prefWidth="75.0" text="Price" />
+                              <TableColumn fx:id="historyTableOrdersApprove" prefWidth="75.0" text="Approve" />
                            </columns>
                         </TableView>
                      </children></AnchorPane>

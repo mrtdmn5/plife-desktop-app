@@ -4,11 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
@@ -45,30 +48,80 @@ public class HomeController implements Initializable {
     private TableColumn<AddTableItems, String> ordersApprove;
 
 
-//    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//    LocalDateTime now = LocalDateTime.now();
+    @FXML
+    private TableView<AddTableItems> ordersHistoryTable;
+
+    @FXML
+    private TableColumn<AddTableItems, String> historyTableOrdersDate;
+
+    @FXML
+    private TableColumn<AddTableItems, String> historyTableOrderNo;
+
+    @FXML
+    private TableColumn<AddTableItems, Double> historyTableOrdersPrice;
+
+    @FXML
+    private TableColumn<AddTableItems, String> historyTableOrderProductionName;
+
+    @FXML
+    private TableColumn<AddTableItems, Integer> historyTableOrdersQuantity;
+
+
+    @FXML
+    private TableColumn<AddTableItems, String> historyTableOrdersApprove;
+
     ObservableList<AddTableItems> list = FXCollections.observableArrayList(
 
     );
 
+    public void setTab(TableView ordersHistoryTable) {
+        JSONParser jsonParser = new JSONParser();
+        JSONArray historyArr = new JSONArray();
+        Date date = new Date();
+        try {
+            try {
+                historyArr = (JSONArray) jsonParser.parse(new FileReader("D:/output.json"));
+
+            } catch (Exception e) {
+                FileWriter file = new FileWriter("D:/output.json");
+                file.write("");
+                file.close();
+            }
+
+            ObservableList<AddTableItems> list = FXCollections.observableArrayList();
+            for (int i = 0; i < historyArr.size(); i++) {
+                JSONObject item = (JSONObject) historyArr.get(i);
+                list.add(new AddTableItems((String) item.get("date"), (String) item.get("orderNo"), item.get("productName") + "4", Integer.parseInt(item.get("quantity").toString()), Integer.parseInt(item.get("unitPrice").toString())));
+
+            }
+            ordersHistoryTable.setItems(list);
+
+        } catch (Exception e) {
+
+            System.out.println("Error on Write History Table" + e);
+            e.printStackTrace();
+        }
+
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-       addItemsToTable(list);
-
-
+        addItemsToTable(list);
+        addItemsToHistoryTable(list);
+        setTab(ordersHistoryTable);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Server server= new Server();
-                server.startServer(ordersTable);
+                Server server = new Server();
+                server.startServer(ordersTable, ordersHistoryTable);
 
             }
         }).start();
     }
 
-    public  void  addItemsToTable(ObservableList  list){
+    public void addItemsToTable(ObservableList list) {
 
         ordersDate.setCellValueFactory(new PropertyValueFactory<AddTableItems, String>("date"));
         ordersOrderNo.setCellValueFactory(new PropertyValueFactory<AddTableItems, String>("orderNo"));
@@ -77,9 +130,19 @@ public class HomeController implements Initializable {
         ordersPrice.setCellValueFactory(new PropertyValueFactory<AddTableItems, Double>("price"));
 
         ordersTable.setItems(list);
+
     }
 
+    public void addItemsToHistoryTable(ObservableList list) {
+        historyTableOrdersDate.setCellValueFactory(new PropertyValueFactory<AddTableItems, String>("date"));
+        historyTableOrderNo.setCellValueFactory(new PropertyValueFactory<AddTableItems, String>("orderNo"));
+        historyTableOrderProductionName.setCellValueFactory(new PropertyValueFactory<AddTableItems, String>("productionName"));
+        historyTableOrdersQuantity.setCellValueFactory(new PropertyValueFactory<AddTableItems, Integer>("quantity"));
+        historyTableOrdersPrice.setCellValueFactory(new PropertyValueFactory<AddTableItems, Double>("price"));
 
+        ordersHistoryTable.setItems(list);
+
+    }
 
 
 }
