@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -70,6 +72,11 @@ public class HomeController implements Initializable {
     @FXML
     private TableColumn<AddTableItems, String> historyTableOrdersApprove;
 
+
+    @FXML
+    public  TextFlow orderDetailsTextFlow;
+
+
     ObservableList<AddTableItems> list = FXCollections.observableArrayList(
 
     );
@@ -86,7 +93,7 @@ public class HomeController implements Initializable {
             ObservableList<AddTableItems> list = FXCollections.observableArrayList();
             for (int i = 0; i < historyArr.size(); i++) {
                 JSONObject item = (JSONObject) historyArr.get(i);
-                list.add(new AddTableItems((String) item.get("date"), (String) item.get("orderNo"), item.get("productName") + "4", Integer.parseInt(item.get("quantity").toString()), Integer.parseInt(item.get("unitPrice").toString())));
+                list.add(new AddTableItems((String) item.get("date"), (String) item.get("orderNo"), item.get("productName") + "4", Integer.parseInt(item.get("quantity").toString()), Integer.parseInt(item.get("unitPrice").toString()),"addtionalH"));
             }
             ordersHistoryTable.setItems(list);
 
@@ -101,6 +108,8 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
+
         addItemsToTable(list);
         addItemsToHistoryTable(list);
         setTab(ordersHistoryTable);
@@ -108,7 +117,7 @@ public class HomeController implements Initializable {
             @Override
             public void run() {
                 Server server = new Server();
-                server.startServer(ordersTable, ordersHistoryTable);
+                server.startServer(ordersTable, ordersHistoryTable,orderDetailsTextFlow);
 
             }
         }).start();

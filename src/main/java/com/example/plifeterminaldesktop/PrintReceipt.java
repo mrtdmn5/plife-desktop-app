@@ -16,7 +16,7 @@ public class PrintReceipt {
         text.setWrapText(true);
         text.setStyle("-fx-font-family: \"Comic Sans MS\"; -fx-font-size: 8;");
         text.setText(receipt);
-        print(text);
+      //  print(text);
 
     }
 

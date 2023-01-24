@@ -11,12 +11,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.TextFlow?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="573.0" prefWidth="691.0" style="-fx-background-color: #ececec;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plifeterminaldesktop.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minWidth="900.0" prefHeight="573.0" prefWidth="691.0" style="-fx-background-color: #ececec;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plifeterminaldesktop.HomeController">
    <top>
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #F5F5F5;" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="691.0">
+            <MenuBar layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="3500.0">
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
@@ -41,16 +42,16 @@
          </BorderPane.margin></Pane>
    </top>
    <bottom>
-      <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER" />
+      <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" style="-fx-background-color: #D6D6D6;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <TabPane fx:id="mainTabPane" prefHeight="387.0" prefWidth="508.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="mainTabPane" prefHeight="387.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Oreders">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="ordersTable" layoutX="7.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="293.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="ordersTable" layoutX="7.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
                               <TableColumn fx:id="ordersDate" prefWidth="75.0" text="Date" />
                               <TableColumn fx:id="ordersOrderNo" prefWidth="75.0" text="Table Name" />
@@ -99,4 +100,11 @@
         </tabs>
       </TabPane>
    </center>
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #D6D6D6;" BorderPane.alignment="CENTER">
+         <children>
+            <TextFlow fx:id="orderDetailsTextFlow" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="3.0" />
+         </children>
+      </AnchorPane>
+   </right>
 </BorderPane>

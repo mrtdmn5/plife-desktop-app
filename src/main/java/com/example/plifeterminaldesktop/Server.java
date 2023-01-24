@@ -1,8 +1,11 @@
 package com.example.plifeterminaldesktop;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
+import javafx.scene.text.TextFlow;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,7 +18,7 @@ import java.util.Scanner;
 
 public class Server {
 
-    public static void startServer(TableView ordersTable, TableView ordersHistoryTable) {
+    public static void startServer(TableView ordersTable, TableView ordersHistoryTable, TextFlow textFlow) {
 
 
         try {
@@ -23,6 +26,7 @@ public class Server {
             HomeController homeController = new HomeController();
             Receipt receiptClass = new Receipt();
             PrintReceipt printReceiptClass = new PrintReceipt();
+            Additional additionalClass=new Additional();
             FileManager fileManager = new FileManager();
             ServerSocket serverSocket = new ServerSocket(6402);
             Socket connectionSocket = serverSocket.accept();
@@ -43,6 +47,9 @@ public class Server {
                         JSONParser jsonParser = new JSONParser();
                         object = jsonParser.parse(input);
                         cartArr = (JSONArray) object;
+
+                        System.out.println(cartArr);
+
 
                         ObservableList<AddTableItems> list = FXCollections.observableArrayList();
                         JSONObject orderNoObj = (JSONObject) cartArr.get(cartArr.size() - 1);
@@ -68,12 +75,20 @@ public class Server {
                             item.put("date", date.toString());
                             item.put("orderNo", orderNo);
                             historyArr.add(item);
-                            list.add(new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price));
+                            boolean hasAdditional=item.get("hasAdditional").toString().equals("true")?true:false;
+                            System.out.println("**");
+                            System.out.println(item.get("hasAdditional"));
+                            System.out.println(hasAdditional);
+                            System.out.println("**");
+                            list.add(new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price,hasAdditional?item.get("selectedAdditional").toString():"None"));
 
                             total = Integer.parseInt(item.get("unitPrice").toString()) + total;
                             receipt = receiptClass.createReceiptItems(receipt, productName, String.valueOf(quantity), String.valueOf(price));
 
                         }
+
+
+
 
                         String printText = receiptClass.createReceipt(date, receipt, total);
                         printReceiptClass.createPrinterItems(printText);
@@ -84,6 +99,9 @@ public class Server {
 
 
                         ordersTable.setItems(list);
+                        additionalClass.getAdditionalItems(ordersTable,textFlow);
+
+
                         if (input.equals("**close**")) {
                             break;
                         }
