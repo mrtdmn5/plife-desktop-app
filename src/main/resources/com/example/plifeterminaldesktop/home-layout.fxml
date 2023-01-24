@@ -13,20 +13,15 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.TextFlow?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minWidth="900.0" prefHeight="573.0" prefWidth="691.0" style="-fx-background-color: #ececec;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plifeterminaldesktop.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minWidth="900.0" prefHeight="611.0" prefWidth="1073.0" style="-fx-background-color: #ececec;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.plifeterminaldesktop.HomeController">
    <top>
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #F5F5F5;" BorderPane.alignment="CENTER">
          <children>
             <MenuBar layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="3500.0">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Settings">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem id="setPort" mnemonicParsing="false" onAction="#setPortAction" text="Set Port" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -53,12 +48,12 @@
                      <children>
                         <TableView fx:id="ordersTable" layoutX="7.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                              <TableColumn fx:id="ordersDate" prefWidth="75.0" text="Date" />
-                              <TableColumn fx:id="ordersOrderNo" prefWidth="75.0" text="Table Name" />
-                            <TableColumn fx:id="ordersProductionName" prefWidth="75.0" text="Production" />
-                            <TableColumn fx:id="ordersQuantity" prefWidth="75.0" text="Quantity" />
-                              <TableColumn fx:id="ordersPrice" prefWidth="75.0" text="Price" />
-                              <TableColumn fx:id="ordersApprove" prefWidth="75.0" text="Approve" />
+                              <TableColumn fx:id="ordersDate" prefWidth="199.0" text="Date" />
+                              <TableColumn fx:id="ordersOrderNo" minWidth="0.0" prefWidth="84.0" text="Table Name" />
+                            <TableColumn fx:id="ordersProductionName" minWidth="0.0" prefWidth="216.0" text="Production" />
+                            <TableColumn fx:id="ordersQuantity" prefWidth="54.0" text="Qty" />
+                              <TableColumn fx:id="ordersPrice" prefWidth="69.0" text="Price" />
+                              <TableColumn fx:id="ordersApprove" prefWidth="92.0" text="Approve" />
                           </columns>
                         </TableView>
                      </children>
@@ -71,12 +66,12 @@
                      <children>
                         <TableView fx:id="ordersHistoryTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="691.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <columns>
-                              <TableColumn fx:id="historyTableOrdersDate" prefWidth="75.0" text="Date" />
-                              <TableColumn fx:id="historyTableOrderNo" prefWidth="75.0" text="Table Name" />
-                              <TableColumn fx:id="historyTableOrderProductionName" prefWidth="75.0" text="Production" />
-                              <TableColumn fx:id="historyTableOrdersQuantity" prefWidth="75.0" text="Quantity" />
-                              <TableColumn fx:id="historyTableOrdersPrice" prefWidth="75.0" text="Price" />
-                              <TableColumn fx:id="historyTableOrdersApprove" prefWidth="75.0" text="Approve" />
+                              <TableColumn fx:id="historyTableOrdersDate" prefWidth="184.0" text="Date" />
+                              <TableColumn fx:id="historyTableOrderNo" text="Table Name" />
+                              <TableColumn fx:id="historyTableOrderProductionName" prefWidth="288.0" text="Production" />
+                              <TableColumn fx:id="historyTableOrdersQuantity" prefWidth="52.0" text="Qty" />
+                              <TableColumn fx:id="historyTableOrdersPrice" prefWidth="67.0" text="Price" />
+                              <TableColumn fx:id="historyTableOrdersApprove" prefWidth="74.0" text="Approve" />
                            </columns>
                         </TableView>
                      </children></AnchorPane>
@@ -103,7 +98,7 @@
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #D6D6D6;" BorderPane.alignment="CENTER">
          <children>
-            <TextFlow fx:id="orderDetailsTextFlow" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="3.0" />
+            <TextFlow fx:id="orderDetailsTextFlow" layoutX="18.0" layoutY="14.0" prefHeight="484.0" prefWidth="277.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="3.0" />
          </children>
       </AnchorPane>
    </right>

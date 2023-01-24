@@ -13,6 +13,8 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -23,12 +25,14 @@ public class Server {
 
         try {
             String input = null, output;
+            Path fileName= Path.of("port.json");
+            String port = Files.readString(fileName);
             HomeController homeController = new HomeController();
             Receipt receiptClass = new Receipt();
             PrintReceipt printReceiptClass = new PrintReceipt();
             Additional additionalClass=new Additional();
             FileManager fileManager = new FileManager();
-            ServerSocket serverSocket = new ServerSocket(6402);
+            ServerSocket serverSocket = new ServerSocket(Integer.parseInt(port));
             Socket connectionSocket = serverSocket.accept();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
             Scanner inFromClient = new Scanner(connectionSocket.getInputStream());
@@ -57,12 +61,10 @@ public class Server {
 
                         JSONArray historyArr = new JSONArray();
                         try {
-                            historyArr = (JSONArray) jsonParser.parse(new FileReader("D:/output.json"));
+                           historyArr = fileManager.readJsonFile();
 
                         } catch (Exception e) {
-                            FileWriter file = new FileWriter("D:/output.json");
-                            file.write("");
-                            file.close();
+                            fileManager.writeJsonFile(historyArr);
                         }
                         String receipt = new String();
                         int total = 0;

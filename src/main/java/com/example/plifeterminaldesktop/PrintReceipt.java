@@ -11,12 +11,14 @@ public class PrintReceipt {
 
         ObservableSet<Printer> printers = Printer.getAllPrinters();
         Printer defaultprinter = Printer.getDefaultPrinter();
+        System.out.println(defaultprinter);
+
         Label text = new Label();
         text.setMaxSize(140 ,1000);
         text.setWrapText(true);
         text.setStyle("-fx-font-family: \"Comic Sans MS\"; -fx-font-size: 8;");
         text.setText(receipt);
-      //  print(text);
+        print(text);
 
     }
 

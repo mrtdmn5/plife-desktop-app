@@ -8,15 +8,16 @@ import java.io.FileWriter;
 
 public class FileManager {
 
+    String path="output.json";
     public  void  writeJsonFile(JSONArray historyArr){
 
         try {
-            FileWriter file = new FileWriter("D:/output.json");
+            FileWriter file = new FileWriter(path);
             file.write(historyArr.toJSONString());
             file.close();
 
         }catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
@@ -24,9 +25,10 @@ public class FileManager {
         JSONArray historyArr = new JSONArray();
         JSONParser jsonParser = new JSONParser();
         try {
-            historyArr = (JSONArray) jsonParser.parse(new FileReader("D:/output.json"));
+            historyArr = (JSONArray) jsonParser.parse(new FileReader(path));
 
         }catch (Exception e){
+            writeJsonFile(historyArr);
 
         }
 
