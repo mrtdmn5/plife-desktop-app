@@ -14,10 +14,13 @@ public class PrintReceipt {
         System.out.println(defaultprinter);
 
         Label text = new Label();
-        text.setMaxSize(140 ,1000);
-        text.setWrapText(true);
+        text.setMaxSize(140 ,-1);
+        text.setWrapText(false);
         text.setStyle("-fx-font-family: \"Comic Sans MS\"; -fx-font-size: 8;");
         text.setText(receipt);
+        System.out.println("----------");
+
+        System.out.println(text.getText());
         print(text);
 
     }
@@ -26,7 +29,7 @@ public class PrintReceipt {
     private static void print(Node node)
     {
 
-        // Create a printer job for the default printer
+
         PrinterJob job = PrinterJob.createPrinterJob();
 
         if (job != null)
@@ -35,18 +38,17 @@ public class PrintReceipt {
             System.out.println(job.jobStatusProperty().asString());
 
 
-            // Print the node
-            PageLayout pageLayout = job.getPrinter().createPageLayout(Paper.A6, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
+            PageLayout pageLayout = job.getPrinter().createPageLayout(Paper.A0, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
+
             boolean printed = job.printPage(pageLayout,node);
 
             if (printed)
             {
-                // End the printer job
+
                 job.endJob();
             }
             else
             {
-                // Write Error Message
                 System.out.println("Printing failed.!!!");
             }
         }

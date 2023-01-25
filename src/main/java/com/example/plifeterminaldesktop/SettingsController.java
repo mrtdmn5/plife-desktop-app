@@ -1,15 +1,17 @@
 package com.example.plifeterminaldesktop;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-
-import java.io.FileNotFoundException;
+import javafx.stage.Stage;
 import java.io.FileWriter;
+import java.net.Inet4Address;
+
 
 public class SettingsController {
 
@@ -23,9 +25,13 @@ public class SettingsController {
     private Label errorLabelForPort;
 
 
-
-
     public void initialize() {
+        try {
+            yourIpLabel.setText(Inet4Address.getLocalHost().getHostAddress());
+
+        } catch (Exception e) {
+
+        }
         newPortTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(
@@ -35,7 +41,6 @@ public class SettingsController {
                 if (!newValue.matches("\\d*")) {
 
                     newPortTextField.setText(newValue.replaceAll("[^\\d]", ""));
-                    System.out.println("dogru" + newValue.toString());
                 } else {
                     String port = newPortTextField.getText();
                     if (!port.isBlank() && !port.isEmpty()) {
@@ -44,10 +49,8 @@ public class SettingsController {
                             errorLabelForPort.setText("Port number must be less than 65535 !");
                             errorLabelForPort.setTextFill(Color.web("#ff0000"));
                             newPortTextField.requestFocus();
-                            System.out.println("buyuk");
                         }
                     }
-                    System.out.println("yanlis");
 
                 }
             }
@@ -59,25 +62,44 @@ public class SettingsController {
 
         String port = newPortTextField.getText();
         if (!port.isBlank() && !port.isEmpty()) {
+            try {
+                FileWriter file = new FileWriter("port.json");
+                file.write(port);
+                file.close();
+                errorLabelForPort.setText("Saved..");
+                errorLabelForPort.setTextFill(Color.web("#228B22"));
+                delay(500, () -> ((Stage) (((Button) actionEvent.getSource()).getScene().getWindow())).close());
 
-            System.out.println("dolu");
-
-
-//        try {
-//            FileWriter file = new FileWriter("port.json");
-//            file.write(port);
-//            file.close();
-//        } catch (Exception er) {
-//            er.printStackTrace();
-//        }
+            } catch (Exception er) {
+                errorLabelForPort.setText("Try another port..");
+                errorLabelForPort.setTextFill(Color.web("#ff0000"));
+                er.printStackTrace();
+            }
         } else {
+            errorLabelForPort.setText("Port cannot be empty..");
+            errorLabelForPort.setTextFill(Color.web("#ff0000"));
             System.out.println("bos");
         }
 
     }
 
     public void discardSettingsAction(ActionEvent actionEvent) {
-        System.out.println("discardSettingsAction");
+        ((Stage) (((Button) actionEvent.getSource()).getScene().getWindow())).close();
 
+    }
+
+    public static void delay(long millis, Runnable continuation) {
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(millis);
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(event -> continuation.run());
+        new Thread(sleeper).start();
     }
 }

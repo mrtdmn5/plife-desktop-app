@@ -4,6 +4,7 @@ module com.example.plifeterminaldesktop {
 
     requires org.kordamp.bootstrapfx.core;
     requires json.simple;
+    requires java.desktop;
 
     opens com.example.plifeterminaldesktop to javafx.fxml;
     exports com.example.plifeterminaldesktop;

@@ -23,6 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -101,10 +102,12 @@ public class HomeController implements Initializable {
             } catch (Exception e) {
                 fileManager.writeJsonFile(new JSONArray());
             }
+
             ObservableList<AddTableItems> list = FXCollections.observableArrayList();
             for (int i = 0; i < historyArr.size(); i++) {
                 JSONObject item = (JSONObject) historyArr.get(i);
-                list.add(new AddTableItems((String) item.get("date"), (String) item.get("orderNo"), item.get("productName") + "4", Integer.parseInt(item.get("quantity").toString()), Integer.parseInt(item.get("unitPrice").toString()), "addtionalH"));
+                boolean hasAdditional=item.get("hasAdditional").toString().equals("true")?true:false;
+                list.add(new AddTableItems((String) item.get("date"), (String) item.get("orderNo"), item.get("productName") + "4", Integer.parseInt(item.get("quantity").toString()), Integer.parseInt(item.get("unitPrice").toString()), hasAdditional?item.get("selectedAdditional").toString():"None"));
             }
             ordersHistoryTable.setItems(list);
 
@@ -118,11 +121,13 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        Additional additionalClass=new Additional();
         checkPortFile();
         addItemsToTable(list);
         addItemsToHistoryTable(list);
         setTab(ordersHistoryTable);
+        additionalClass.getAdditionalItems(ordersHistoryTable,orderDetailsTextFlow);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -188,8 +193,7 @@ public class HomeController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("settings-port-layout.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 stageSettings = new Stage();
-                stageSettings.setTitle("About");
-
+                stageSettings.setTitle("Set New Port");
                 stageSettings.setScene(new Scene(root1));
                 stageSettings.setResizable(false);
                 stageSettings.show();

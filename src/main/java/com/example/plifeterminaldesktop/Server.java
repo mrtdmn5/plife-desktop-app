@@ -78,14 +78,11 @@ public class Server {
                             item.put("orderNo", orderNo);
                             historyArr.add(item);
                             boolean hasAdditional=item.get("hasAdditional").toString().equals("true")?true:false;
-                            System.out.println("**");
-                            System.out.println(item.get("hasAdditional"));
-                            System.out.println(hasAdditional);
-                            System.out.println("**");
+
                             list.add(new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price,hasAdditional?item.get("selectedAdditional").toString():"None"));
 
                             total = Integer.parseInt(item.get("unitPrice").toString()) + total;
-                            receipt = receiptClass.createReceiptItems(receipt, productName, String.valueOf(quantity), String.valueOf(price));
+                            receipt = receiptClass.createReceiptItems(receipt, productName, String.valueOf(quantity), String.valueOf(price),hasAdditional?item.get("selectedAdditional").toString():null);
 
                         }
 
@@ -93,6 +90,9 @@ public class Server {
 
 
                         String printText = receiptClass.createReceipt(date, receipt, total);
+//                        System.out.println("---------------------");
+//
+//                        System.out.println(printText);
                         printReceiptClass.createPrinterItems(printText);
 
 

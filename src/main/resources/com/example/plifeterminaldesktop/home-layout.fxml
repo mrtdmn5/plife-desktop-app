@@ -98,7 +98,7 @@
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: #D6D6D6;" BorderPane.alignment="CENTER">
          <children>
-            <TextFlow fx:id="orderDetailsTextFlow" layoutX="18.0" layoutY="14.0" prefHeight="484.0" prefWidth="277.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="3.0" />
+            <TextFlow fx:id="orderDetailsTextFlow" layoutX="18.0" layoutY="14.0" prefHeight="484.0" prefWidth="277.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="3.0" />
          </children>
       </AnchorPane>
    </right>
