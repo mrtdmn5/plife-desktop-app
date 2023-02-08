@@ -65,8 +65,10 @@ public class Server {
                         System.out.println(cartArr);
 
 
-                        ObservableList<AddTableItems> newOrders = ordersTable.getItems();
-                     //   ObservableList<AddTableItems> oldOrders = ordersTable.getItems();
+                     //   ObservableList<AddTableItems> newOrders = ordersTable.getItems();
+                        ObservableList<AddTableItems> newOrders =  FXCollections.observableArrayList();
+
+                        ObservableList<AddTableItems> oldOrders = ordersTable.getItems();
 
 
                         JSONObject orderNoObj = (JSONObject) cartArr.get(cartArr.size() - 1);
@@ -100,24 +102,32 @@ public class Server {
                             boolean hasAdditional = item.get("hasAdditional").toString().equals("true") ? true : false;
 
                             AddTableItems tableItems= new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price, hasAdditional ? item.get("selectedAdditional").toString() : "None",acceptOrderButton,cancelOrderButton);
+                            AddTableItems acceptedOrCanceledItem= new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price, hasAdditional ? item.get("selectedAdditional").toString() : "None",acceptOrderButton,cancelOrderButton);
 
                             newOrders.add(tableItems);
 
                             total = Integer.parseInt(item.get("unitPrice").toString()) + total;
                             receipt = receiptClass.createReceiptItems(receipt, productName, String.valueOf(quantity), String.valueOf(price), hasAdditional ? item.get("selectedAdditional").toString() : null);
 
+                          //  acceptAndCancelClass.buttonsActions(acceptOrderButton,cancelOrderButton,ordersTable,tableItems,ordersAcceptedTable,ordersCanceledTable,textFlow,orderCountLabel);
 
 
-                            acceptAndCancelClass.buttonsActions(acceptOrderButton,cancelOrderButton,ordersTable,tableItems,ordersAcceptedTable,ordersCanceledTable,textFlow,orderCountLabel);
+                            acceptAndCancelClass.buttonsActions(acceptOrderButton,cancelOrderButton,ordersTable,tableItems,ordersAcceptedTable,ordersCanceledTable,textFlow,orderCountLabel,acceptedOrCanceledItem);
+
+
+
                         }
 
                         String printText = receiptClass.createReceipt(date, receipt, total);
                         printReceiptClass.createPrinterItems(printText);
 
                         fileManager.writeJsonFile(historyArr);
-                        homeController.setTab(ordersHistoryTable);
+                       homeController.setTab(ordersHistoryTable);
 
-                        ordersTable.setItems(newOrders);
+                       ObservableList finalOrderList=FXCollections.observableArrayList(oldOrders);
+                        finalOrderList.addAll(newOrders);
+                      //  oldOrders.addAll(newOrders);
+                        ordersTable.setItems(finalOrderList);
                         additionalClass.getAdditionalItems(ordersTable, textFlow);
                         Platform.runLater(new Runnable(){
                             @Override

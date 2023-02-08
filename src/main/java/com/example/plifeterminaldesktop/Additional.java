@@ -40,7 +40,7 @@ public class Additional {
         try {
             textFlow.getChildren().clear();
 
-        textFlow.setStyle("-fx-text-alignment: center;");
+  //      textFlow.setStyle("-fx-text-alignment: center;");
 
         ObservableList<AddTableItems> addTableItems;
         addTableItems=tableView.getSelectionModel().getSelectedItems();

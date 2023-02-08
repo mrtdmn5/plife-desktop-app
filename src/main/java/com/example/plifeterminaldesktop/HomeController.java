@@ -1,5 +1,7 @@
 package com.example.plifeterminaldesktop;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -107,8 +109,15 @@ public class HomeController implements Initializable {
     @FXML
     public Label orderCount;
 
+    @FXML
+    public TabPane mainTabPane;
+
+    @FXML
+    public Button clearHistoryButton;
 
 
+    @FXML
+    public Label ordersCountText;
 
 
 
@@ -150,6 +159,9 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        clearHistoryButton.setManaged(false);
+        clearHistoryButton.setVisible(false);
+
         Additional additionalClass=new Additional();
         checkPortFile();
         addItemsToTable(list);
@@ -161,6 +173,74 @@ public class HomeController implements Initializable {
 
 
         //orderCountTextFlow.getChildren().add(new Label("murattt"));
+        mainTabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+            @Override
+            public void changed(ObservableValue<? extends Tab> observableValue, Tab oldTab, Tab newTab) {
+
+                switch(newTab.getId()) {
+
+                    case "ordersTab": {
+                        clearHistoryButton.setManaged(false);
+                        clearHistoryButton.setVisible(false);
+
+                        ordersCountText.setText("Orders:");
+                        ordersCountText.setManaged(true);
+                        ordersCountText.setVisible(true);
+
+                        orderCount.setText(String.valueOf(ordersTable.getItems().size()));
+
+
+                        System.out.println("ordersTab");
+
+                        break;
+                    }
+                    case "ordersHistoryTab":
+                    {
+                        clearHistoryButton.setManaged(true);
+                        clearHistoryButton.setVisible(true);
+
+                        ordersCountText.setManaged(false);
+                        ordersCountText.setVisible(false);
+
+                        orderCount.setText(String.valueOf(ordersHistoryTable.getItems().size()));
+
+                        System.out.println("ordersHistoryTab2");
+                        break;
+                    }
+
+                    case "ordersAcceptedTab": {
+                        clearHistoryButton.setManaged(false);
+                        clearHistoryButton.setVisible(false);
+
+                        ordersCountText.setManaged(true);
+                        ordersCountText.setVisible(true);
+                        ordersCountText.setText("Accepted Order:");
+
+                        orderCount.setText(String.valueOf(ordersAcceptedTable.getItems().size()));
+
+
+                        System.out.println("ordersAcceptedTab");
+                        break;
+                    }
+                    case "ordersCanceledTab": {
+                        clearHistoryButton.setManaged(false);
+                        clearHistoryButton.setVisible(false);
+
+                        ordersCountText.setManaged(true);
+                        ordersCountText.setVisible(true);
+                        ordersCountText.setText("Canceled Order:");
+
+                        orderCount.setText(String.valueOf(ordersCanceledTable.getItems().size()));
+
+                        System.out.println("ordersCanceledTab");
+                        break;
+                    }
+                    default:
+                        // code block
+                }
+              //  System.out.println(newTab.getId());
+            }
+        });
 
         new Thread(new Runnable() {
             @Override
@@ -170,6 +250,8 @@ public class HomeController implements Initializable {
 
             }
         }).start();
+
+
     }
 
     public void addItemsToTable(ObservableList list) {
@@ -277,6 +359,8 @@ public class HomeController implements Initializable {
 
         }
     }
+
+
 
 
 //    public void  setOrderCount(Label orderCountLabel,TableView orderTable){

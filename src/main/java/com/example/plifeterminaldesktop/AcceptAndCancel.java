@@ -15,7 +15,7 @@ public class AcceptAndCancel {
     ObservableList acceptedList = FXCollections.observableArrayList();
     ObservableList canceledList = FXCollections.observableArrayList();
 
-   public void buttonsActions(Button acceptButton, Button cancelButton, TableView ordersTableView, Object tableItem, TableView ordersAcceptedTable, TableView ordersCanceledTable, TextFlow textFlow, Label orderCountLabel){
+   public void buttonsActions(Button acceptButton, Button cancelButton, TableView ordersTableView, Object tableItem, TableView ordersAcceptedTable, TableView ordersCanceledTable, TextFlow textFlow, Label orderCountLabel,Object acceptedOrCanceledItem){
 
 //       System.out.println("buttonsActions");
 //       ordersAcceptedTable.getItems().removeAll();
@@ -25,7 +25,7 @@ public class AcceptAndCancel {
            public void handle(ActionEvent actionEvent) {
 
 
-               acceptedItems(ordersTableView,tableItem,ordersAcceptedTable,textFlow,orderCountLabel);
+               acceptedItems(ordersTableView,tableItem,ordersAcceptedTable,textFlow,orderCountLabel, acceptedOrCanceledItem);
 
            }
        });
@@ -34,7 +34,7 @@ public class AcceptAndCancel {
            @Override
            public void handle(ActionEvent actionEvent) {
 
-               canceledItems(ordersTableView,tableItem,ordersCanceledTable,textFlow,orderCountLabel);
+               canceledItems(ordersTableView,tableItem,ordersCanceledTable,textFlow,orderCountLabel, acceptedOrCanceledItem);
 
            }
        });
@@ -42,10 +42,10 @@ public class AcceptAndCancel {
 
     }
 
-    private void acceptedItems(TableView ordersTableView,Object tableItem,TableView ordersAcceptedTable, TextFlow textFlow, Label orderCountLabel){
+    private void acceptedItems(TableView ordersTableView,Object tableItem,TableView ordersAcceptedTable, TextFlow textFlow, Label orderCountLabel,Object acceptedOrCanceledItem){
         System.out.println("accept");
 
-        acceptedList.add(tableItem);
+        acceptedList.add(acceptedOrCanceledItem);
         ordersAcceptedTable.setItems(acceptedList);
         ordersTableView.getItems().remove(tableItem);
         additionalClass.getAdditionalItems(ordersAcceptedTable,textFlow);
@@ -61,10 +61,10 @@ public class AcceptAndCancel {
 
     }
 
-    private void canceledItems(TableView ordersTableView,Object tableItem,TableView ordersCanceledTable,TextFlow textFlow, Label orderCountLabel){
+    private void canceledItems(TableView ordersTableView,Object tableItem,TableView ordersCanceledTable,TextFlow textFlow, Label orderCountLabel,Object acceptedOrCanceledItem){
         System.out.println("cancel");
 
-        canceledList.add(tableItem);
+        canceledList.add(acceptedOrCanceledItem);
         ordersCanceledTable.setItems(canceledList);
         ordersTableView.getItems().remove(tableItem);
         additionalClass.getAdditionalItems(ordersCanceledTable,textFlow);
