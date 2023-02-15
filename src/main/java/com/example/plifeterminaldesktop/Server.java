@@ -16,6 +16,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import javafx.scene.control.Button;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -41,14 +42,20 @@ public class Server {
             Receipt receiptClass = new Receipt();
             PrintReceipt printReceiptClass = new PrintReceipt();
             Additional additionalClass = new Additional();
+
             FileManager fileManager = new FileManager();
-            AcceptAndCancel acceptAndCancelClass=new AcceptAndCancel();
-            ServerSocket serverSocket = new ServerSocket(Integer.parseInt(port));
-            Socket connectionSocket = serverSocket.accept();
-            Scanner inFromClient = new Scanner(connectionSocket.getInputStream());
+            AcceptAndCancel acceptAndCancelClass = new AcceptAndCancel();
+
+            //ServerSocket serverSocket = new ServerSocket(Integer.parseInt(port));
+            com.example.plifeterminaldesktop.Main.serverSocket = new ServerSocket(Integer.parseInt(port));
+           // Socket connectionSocket =  com.example.plifeterminaldesktop.Main.serverSocket.accept();
+            com.example.plifeterminaldesktop.Main.connectionSocket = com.example.plifeterminaldesktop.Main.serverSocket.accept();
+            Scanner inFromClient = new Scanner( com.example.plifeterminaldesktop.Main.connectionSocket.getInputStream());
 
 
-            while (connectionSocket.isConnected()) {
+
+
+            while ( com.example.plifeterminaldesktop.Main.connectionSocket.isConnected()) {
 
                 try {
                     System.out.println("Server start: ");
@@ -65,8 +72,8 @@ public class Server {
                         System.out.println(cartArr);
 
 
-                     //   ObservableList<AddTableItems> newOrders = ordersTable.getItems();
-                        ObservableList<AddTableItems> newOrders =  FXCollections.observableArrayList();
+                        //   ObservableList<AddTableItems> newOrders = ordersTable.getItems();
+                        ObservableList<AddTableItems> newOrders = FXCollections.observableArrayList();
 
                         ObservableList<AddTableItems> oldOrders = ordersTable.getItems();
 
@@ -101,19 +108,18 @@ public class Server {
 
                             boolean hasAdditional = item.get("hasAdditional").toString().equals("true") ? true : false;
 
-                            AddTableItems tableItems= new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price, hasAdditional ? item.get("selectedAdditional").toString() : "None",acceptOrderButton,cancelOrderButton);
-                            AddTableItems acceptedOrCanceledItem= new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price, hasAdditional ? item.get("selectedAdditional").toString() : "None",acceptOrderButton,cancelOrderButton);
+                            AddTableItems tableItems = new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price, hasAdditional ? item.get("selectedAdditional").toString() : "None", acceptOrderButton, cancelOrderButton);
+                            AddTableItems acceptedOrCanceledItem = new AddTableItems((String) item.get("date"), orderNo, productName, quantity, price, hasAdditional ? item.get("selectedAdditional").toString() : "None", acceptOrderButton, cancelOrderButton);
 
                             newOrders.add(tableItems);
 
                             total = Integer.parseInt(item.get("unitPrice").toString()) + total;
                             receipt = receiptClass.createReceiptItems(receipt, productName, String.valueOf(quantity), String.valueOf(price), hasAdditional ? item.get("selectedAdditional").toString() : null);
 
-                          //  acceptAndCancelClass.buttonsActions(acceptOrderButton,cancelOrderButton,ordersTable,tableItems,ordersAcceptedTable,ordersCanceledTable,textFlow,orderCountLabel);
+                            //  acceptAndCancelClass.buttonsActions(acceptOrderButton,cancelOrderButton,ordersTable,tableItems,ordersAcceptedTable,ordersCanceledTable,textFlow,orderCountLabel);
 
 
-                            acceptAndCancelClass.buttonsActions(acceptOrderButton,cancelOrderButton,ordersTable,tableItems,ordersAcceptedTable,ordersCanceledTable,textFlow,orderCountLabel,acceptedOrCanceledItem);
-
+                            acceptAndCancelClass.buttonsActions(acceptOrderButton, cancelOrderButton, ordersTable, tableItems, ordersAcceptedTable, ordersCanceledTable, textFlow, orderCountLabel, acceptedOrCanceledItem);
 
 
                         }
@@ -122,14 +128,14 @@ public class Server {
                         printReceiptClass.createPrinterItems(printText);
 
                         fileManager.writeJsonFile(historyArr);
-                       homeController.setTab(ordersHistoryTable);
+                        homeController.setTab(ordersHistoryTable);
 
-                       ObservableList finalOrderList=FXCollections.observableArrayList(oldOrders);
+                        ObservableList finalOrderList = FXCollections.observableArrayList(oldOrders);
                         finalOrderList.addAll(newOrders);
-                      //  oldOrders.addAll(newOrders);
+                        //  oldOrders.addAll(newOrders);
                         ordersTable.setItems(finalOrderList);
                         additionalClass.getAdditionalItems(ordersTable, textFlow);
-                        Platform.runLater(new Runnable(){
+                        Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
                                 orderCountLabel.setText(String.valueOf(ordersTable.getItems().size()));
@@ -139,15 +145,28 @@ public class Server {
                         });
 
 
-                        if (input.equals("**close**")) {
+
+                    }
+
+                    else {
+
+                        System.out.println("st!!!!!!:::"+com.example.plifeterminaldesktop.Main.serverSocket.isClosed());
+
+                        if (com.example.plifeterminaldesktop.Main.serverSocket==null || com.example.plifeterminaldesktop.Main.serverSocket.isClosed() ) {
+                            System.out.println("if!!!!");
+
                             break;
                         }
-                    } else {
+                        else {
 
-                        connectionSocket = serverSocket.accept();
 
-                        inFromClient = new Scanner(connectionSocket.getInputStream());
+                        System.out.println("else!!!!!!");
 
+                        com.example.plifeterminaldesktop.Main.connectionSocket = com.example.plifeterminaldesktop.Main.serverSocket.accept();
+
+                        inFromClient = new Scanner( com.example.plifeterminaldesktop.Main.connectionSocket.getInputStream());
+
+                        }
                     }
 
                 } catch (Exception e) {

@@ -7,8 +7,18 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Main extends Application {
+    public static ExecutorService executorService =  Executors.newFixedThreadPool(3);
+    public static ServerSocket serverSocket;
+    public static Socket connectionSocket;
+
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -18,10 +28,34 @@ public class Main extends Application {
         stage.setTitle("Plife Terminal!");
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(event -> {
+            executorService.shutdown();
+            try {
+
+
+
+                if(connectionSocket != null)
+                {
+                    connectionSocket.close();
+                    serverSocket.close();
+                    serverSocket=null;
+                    connectionSocket=null;
+                }
+
+            } catch (SocketException e) {
+
+                // e.printStackTrace();
+            }catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // System.out.println("expected shutdown");
+        });
 
     }
 
     public static void main(String[] args) {
+
         launch();
     }
 }

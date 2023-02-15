@@ -22,6 +22,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static com.example.plifeterminaldesktop.Main.executorService;
 
 public class HomeController implements Initializable {
     @FXML
@@ -241,7 +245,7 @@ public class HomeController implements Initializable {
               //  System.out.println(newTab.getId());
             }
         });
-
+        /*
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -250,7 +254,16 @@ public class HomeController implements Initializable {
 
             }
         }).start();
+        */
+        //com.example.plifeterminaldesktop.Main.executorService = Executors.newFixedThreadPool(3);
 
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                Server server = new Server();
+                server.startServer(ordersTable, ordersHistoryTable, orderDetailsTextFlow,ordersAcceptedTable,ordersCanceledTable, orderCount);
+            }
+        });
 
     }
 

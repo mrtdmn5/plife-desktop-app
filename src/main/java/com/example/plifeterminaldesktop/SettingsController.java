@@ -94,12 +94,16 @@ public class SettingsController {
             protected Void call() throws Exception {
                 try {
                     Thread.sleep(millis);
+                    ///Thread.currentThread().interrupt();
                 } catch (InterruptedException e) {
                 }
                 return null;
             }
         };
-        sleeper.setOnSucceeded(event -> continuation.run());
+        sleeper.setOnSucceeded(event -> continuation.run()
+
+        );
+
         new Thread(sleeper).start();
     }
 }
